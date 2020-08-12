@@ -3,8 +3,8 @@ import 'validators.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Bloc extends Object with Validators {
-  final _email = StreamController<String>.broadcast();
-  final _password = StreamController<String>.broadcast();
+  final _email = BehaviorSubject<String>();
+  final _password = BehaviorSubject<String>();
 
   // Add data to stream
   Stream<String> get email => _email.stream.transform(validateEmail);
@@ -17,6 +17,14 @@ class Bloc extends Object with Validators {
   // Change data
   Function(String) get changeEmail => _email.sink.add;
   Function(String) get changePassword => _password.sink.add;
+
+  submit() {
+    final email = _email.value;
+    final password = _password.value;
+
+    print('$email');
+    print('$password');
+  }
 
   dispose() {
     _email.close();
